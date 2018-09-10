@@ -1,15 +1,17 @@
 package com.alibaba.datax.core.statistics.container.communicator.taskgroup;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
+import org.apache.commons.lang.Validate;
+
 import com.alibaba.datax.common.util.Configuration;
 import com.alibaba.datax.core.statistics.communication.Communication;
 import com.alibaba.datax.core.statistics.container.collector.ProcessInnerCollector;
 import com.alibaba.datax.core.statistics.container.communicator.AbstractContainerCommunicator;
 import com.alibaba.datax.core.util.container.CoreConstant;
 import com.alibaba.datax.dataxservice.face.domain.enums.State;
-import org.apache.commons.lang.Validate;
-
-import java.util.List;
-import java.util.Map;
 
 /**
  * 该类是用于处理 taskGroupContainer 的 communication 的收集汇报的父类
@@ -34,6 +36,8 @@ public abstract class AbstractTGContainerCommunicator extends AbstractContainerC
         super.setCollector(new ProcessInnerCollector(this.jobId));
         this.taskGroupId = configuration.getInt(
                 CoreConstant.DATAX_CORE_CONTAINER_TASKGROUP_ID);
+        final Configuration conf=configuration;
+        super.getCollector().registerTGCommunication(new ArrayList<Configuration>() {{this.add(conf);}});
     }
 
     @Override
